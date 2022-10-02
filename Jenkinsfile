@@ -23,7 +23,7 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-cred-demidmgl') {
-            dockImage = docker.build -t java-web-app:latest .'
+            dockImage = docker.build java-web-app:latest .'
             dockImage.push()
           }
         }
