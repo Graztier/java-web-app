@@ -16,16 +16,17 @@ pipeline {
     }
     stage('Build + tag') {
       steps {
-          bat"docker build ."
+          bat"docker build . -t demidmgl/java-web-app:latest -t demidmgl/java-web-app:v1.0"
       }
     }
     stage('Login') {
       steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-cred-demidmgl') {
-            dockImage = docker.build java-web-app:latest .'
-            dockImage.push()
-          }
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-cred-demidmgl', passwordVariable: 'pass', usernameVariable: 'user')]) {
+          bat'echo $pass | docker login -u $user --password-stdin'
+          bat'docker build -t demidmgl/java-web-app:latest .'
+          bat'docker tag demidmgl/java-web-app:latest demidmgl/java-web-app:v1.0'
+          bat'docker push demidmgl/java-web-app:latest'
+          
         }
       }
     }
