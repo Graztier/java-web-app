@@ -3,6 +3,9 @@ pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
+  environment {
+  	DOCKERHUB_CREDENTIALS=credentials('dockerhub-cred-demidmgl')
+  }
   stages {
     stage('Scan') {
       steps {
@@ -11,5 +14,24 @@ pipeline {
         }
       }
     }
-  }
+    stage('Build + tag') {
+      steps {
+          bat'docker build -t demidmgl/java-web-app:latest'
+      }
+    }
+    stage('Login + Push to Docker HUB') {
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+			steps {
+				sh 'docker push demidmgl/java-web-app:latest'
+			}
+		}
+	}
+
+	post {
+		always {
+			sh 'docker logout'
+		}
+	}
 }
