@@ -16,7 +16,7 @@ pipeline {
     }
     stage('Build + tag') {
       steps {
-          bat"docker build -t demidmgl/java-web-app:latest"
+          bat"docker build . -t demidmgl/java-web-app:latest -t demidmgl/java-web-app:v1.0"
       }
     }
     stage('Login') {
