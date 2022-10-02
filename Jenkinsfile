@@ -21,7 +21,9 @@ pipeline {
     }
     stage('Login') {
       steps {
-        bat'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-cred-demidmgl', passwordVariable: 'pass', usernameVariable: 'user')]) {
+          echo $pass | docker login -u $user --password-stdin
+        }
       }
     }
     stage('Push to Docker HUB'){
