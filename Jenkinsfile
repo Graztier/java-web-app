@@ -21,17 +21,17 @@ pipeline {
     }
     stage('Login + Push to Docker HUB') {
 			steps {
-				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+				bat'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 			}
 			steps {
-				sh 'docker push demidmgl/java-web-app:latest'
+				bat'docker push demidmgl/java-web-app:latest'
 			}
 		}
 	}
 
 	post {
 		always {
-			sh 'docker logout'
+			bat'docker logout'
 		}
 	}
 }
