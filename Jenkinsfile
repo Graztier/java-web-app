@@ -22,10 +22,10 @@ pipeline {
     stage('Login') {
       steps {
         script {
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-cred-demidmgl') {
-            bat'docker build -t demidmgl/java-web-app:latest .'
-            bat'docker tag demidmgl/java-web-app:latest demidmgl/java-web-app:v1.0'
-            bat'docker push demidmgl/java-web-app:latest'
+          bat'echo $DOCKERHUB_CREDENTIALS_PWD | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+          bat'docker build -t demidmgl/java-web-app:latest .'
+          bat'docker tag demidmgl/java-web-app:latest demidmgl/java-web-app:v1.0'
+          bat'docker push demidmgl/java-web-app:latest'
           }
         }
       }
