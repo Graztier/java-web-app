@@ -21,9 +21,11 @@ pipeline {
     }
     stage('Login') {
       steps {
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-cred-demidmgl') {
-          bat"""echo $pass | docker login -u $user --password-stdin"""
-          bat'docker push demidmgl/java-web-app:latest'
+        script {
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-cred-demidmgl') {
+            bat"""echo $pass | docker login -u $user --password-stdin"""
+            bat'docker push demidmgl/java-web-app:latest'
+          }
         }
       }
     }
