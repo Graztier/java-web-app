@@ -22,7 +22,6 @@ pipeline {
     stage('Login') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-cred-demidmgl', passwordVariable: 'pass', usernameVariable: 'user')]) {
-          bat'echo $pass | docker login -u $user --password-stdin'
           bat'docker build -t demidmgl/java-web-app:latest .'
           bat'docker tag demidmgl/java-web-app:latest demidmgl/java-web-app:v1.0'
           bat'docker push demidmgl/java-web-app:latest'
