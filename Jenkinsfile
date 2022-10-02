@@ -21,8 +21,9 @@ pipeline {
     }
     stage('Login') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-cred-demidmgl', passwordVariable: 'pass', usernameVariable: 'user')]) {
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-cred-demidmgl') {
           bat"""echo $pass | docker login -u $user --password-stdin"""
+          bat'docker push demidmgl/java-web-app:latest'
         }
       }
     }
