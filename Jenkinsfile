@@ -23,9 +23,8 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-cred-demidmgl') {
-            bat'docker build -t java-web-app:latest .'
-            bat'docker tag java-web-app:latest demidmgl/java-web-app:latest '
-            bat'docker push demidmgl/java-web-app:latest'
+            dockImage = docker.build -t java-web-app:latest .'
+            dockImage.push()
           }
         }
       }
