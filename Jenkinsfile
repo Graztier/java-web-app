@@ -19,10 +19,12 @@ pipeline {
           bat"docker build -t demidmgl/java-web-app:latest"
       }
     }
-    stage('Login + Push to Docker HUB') {
+    stage('Login') {
       steps {
-    bat'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        bat'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
       }
+    }
+    stage('Push to Docker HUB'){
       steps {
         bat'docker push demidmgl/java-web-app:latest'
       }
